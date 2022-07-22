@@ -16,7 +16,6 @@ public class App {
         var request = HttpRequest.newBuilder(endereco).GET().build();
         HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
         String body = response.body();
-        System.out.println(body);
 
         // extrair os dados de titulo fime, imagem, classificação
         var parser = new JsonParser();

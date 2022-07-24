@@ -1,4 +1,6 @@
+import java.io.InputStream;
 import java.net.URI;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -21,19 +23,40 @@ public class App {
         var parser = new JsonParser();
         List<Map<String, String>> listaDeFilmes = parser.parse(body);
 
-        // exibir os dados recebidos da url
-        for (Map<String,String> filme : listaDeFilmes) {
-            StringBuilder estrela = new StringBuilder("\u001b[97;1m\u001b[44;5;88m");
+        // bloco que chama a classe para gerar as figurinhas
+        var gerador = new generateSticker();
+        
+        // exibir e manipular os dados recebidos da url
+        for (int i = 0; i < listaDeFilmes.size(); i++) {
+
+            String[] urlImageArr = listaDeFilmes.get(i).get("image").split("@._");
+            String urlImagem = urlImageArr.length > 1 ? urlImageArr[0] + "@.jpg" : urlImageArr[0];
+
+            //String urlImagem = filme.get("image").replaceAll("\\._V1_[a-zA-Z]+[0-9]+_CR([0-9]+(,[0-9]+)+)_AL_", "");
+            String tituloFilme = listaDeFilmes.get(i).get("title").replaceAll("\\p{Punct}", "");
+            InputStream inputStream = new URL(urlImagem).openStream();
+            String nomeArquivo = tituloFilme + ".png";
+
+            System.out.println(urlImagem);
+
+            // bloco que gera as figurinhas
+            gerador.createImage(inputStream, nomeArquivo);
+            
+            // linha que mostra qual filme será gerada a imagem
+            System.out.println("\u001b[1mT\u00EDtulo: " + tituloFilme + "\u001b[m");
+
+            // bloco de código para exibir os dados no terminal com formatação
+
+            /*StringBuilder estrela = new StringBuilder("\u001b[1m");
             int somaEstrelas;
 
             for (somaEstrelas = 0; somaEstrelas < Double.valueOf(filme.get("imDbRating")).intValue();somaEstrelas++){
                 estrela.append("\u2B50");
-            }
+            }*/
 
-            System.out.println("\u001b[1mT\u00EDtulo: " + filme.get("title") + "\u001b[m");
-            System.out.println("\u001b[1mPoster: \u001b[m" + filme.get("image"));
+            /*System.out.println("\u001b[1mPoster: \u001b[m" + filme.get("image"));
             System.out.println("\u001b[1mClassificação: " + filme.get("imDbRating") + "\u001b[m");
-            System.out.println(estrela + "\u001b[m");
+            System.out.println(estrela + "\u001b[m");*/
         }
     }
 }

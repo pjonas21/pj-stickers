@@ -20,7 +20,7 @@ public class generateSticker {
         int largura = imagemOriginal.getWidth();
         int altura = imagemOriginal.getHeight();
         int novaAltura = altura + 200;
-        var tercoImagem = largura / 3;
+        //var tercoImagem = largura / 3;
         BufferedImage novaImagem = new BufferedImage(largura, novaAltura, BufferedImage.TRANSLUCENT);
         
         // copiar a imagem original pra novo imagem (em memória)
@@ -28,15 +28,19 @@ public class generateSticker {
         graphics.drawImage(imagemOriginal,0,0,null);
 
         // configurar a fonte e tamanho
-        var fonte = new Font(Font.SANS_SERIF, Font.BOLD, 80);
+        var fonte = new Font(Font.SANS_SERIF, Font.BOLD, 82);
         graphics.setFont(fonte);
         graphics.setColor(Color.YELLOW);
 
         // escrever frase embaixo da imagem
-        graphics.drawString("TOPZERA", tercoImagem, novaAltura - 100);
+        graphics.drawString("TOPZERA", (largura / 2) - 220, novaAltura - 100);
         
         // escrever a nova imagem em um arquivo
-        ImageIO.write(novaImagem,"png",new File("assets/" + nomeArquivo));
+        File folder = new File("saida");
+        if (!folder.exists()){
+            folder.mkdir();
+        }
+        ImageIO.write(novaImagem,"png",new File("saida/" + nomeArquivo));
     }
 
 }

@@ -12,7 +12,8 @@ public class App {
     public static void main(String[] args) throws Exception {
         // acessar url da plataforma de filmes
         //String url = "https://api.mocki.io/v2/549a5d8b/Top250Movies";
-        String url = "https://alura-imdb-api.herokuapp.com/movies"; // desafio 1 - alterar a url da API
+        //String url = "https://alura-imdb-api.herokuapp.com/movies"; // desafio 1 - alterar a url da API
+        String url = "https://api.mocki.io/v2/549a5d8b/Top250TVs";
         URI endereco = URI.create(url);
         var client = HttpClient.newHttpClient();
         var request = HttpRequest.newBuilder(endereco).GET().build();
@@ -22,6 +23,7 @@ public class App {
         // extrair os dados de titulo fime, imagem, classificação
         var parser = new JsonParser();
         List<Map<String, String>> listaDeFilmes = parser.parse(body);
+        System.out.println(listaDeFilmes.size());
 
         // bloco que chama a classe para gerar as figurinhas
         var gerador = new generateSticker();
